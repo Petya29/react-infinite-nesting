@@ -1,6 +1,8 @@
 import React from 'react';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { DndList } from './pages/DndList';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
 
@@ -17,10 +19,12 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <DndList />
-      </ThemeProvider>
+      <DndProvider backend={HTML5Backend}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <DndList />
+        </ThemeProvider>
+      </DndProvider>
     </div>
   );
 }

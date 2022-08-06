@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Box, Container, Divider, List, Paper } from '@mui/material';
+import { Box, Container, List, Paper } from '@mui/material';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { ITask } from '../models/ITask';
 import { TaskAddInput } from '../components/TaskAddInput';
@@ -7,7 +7,7 @@ import { TaskItem } from '../components/TaskItem';
 
 export const DndList: FC = () => {
 
-    const [listRef] = useAutoAnimate<HTMLDivElement>();
+    const [listRef] = useAutoAnimate<HTMLDivElement>({ duration: 150 });
 
     const [tasks, setTasks] = useState<ITask[]>([]);
 
@@ -64,15 +64,13 @@ export const DndList: FC = () => {
                                 <TaskItem
                                     index={i}
                                     task={task}
-                                    isLast={(tasks.length - 1) === i ? true : false}
-                                    isFirst={i === 0 ? true : false}
+                                    nestingLevel={1}
                                     reorder={moveTasks}
                                     editTask={handleEditTask}
                                     removeTask={hadleRemoveTask}
                                     key={task.id}
                                 />
                             ))}
-                            <Divider />
                         </Box>
                     </List>
                 </Paper>

@@ -6,6 +6,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface ISubTasksList {
     subTasks: ITask[],
+    nestingLevel: number,
     moveSubTasks: (currIndex: number, newIndex: number) => void,
     handleEditTask: (newTask: ITask, i: number) => void,
     removeSubTask: (id: string) => void
@@ -13,6 +14,7 @@ interface ISubTasksList {
 
 export const SubTasksList: FC<ISubTasksList> = ({
     subTasks,
+    nestingLevel,
     moveSubTasks,
     handleEditTask,
     removeSubTask,
@@ -28,8 +30,7 @@ export const SubTasksList: FC<ISubTasksList> = ({
                     <TaskItem
                         index={i}
                         task={subTask}
-                        isLast={(subTasks.length - 1) === i ? true : false}
-                        isFirst={i === 0 ? true : false}
+                        nestingLevel={nestingLevel + 1}
                         reorder={moveSubTasks}
                         editTask={handleEditTask}
                         removeTask={() => removeSubTask(subTask.id)}
