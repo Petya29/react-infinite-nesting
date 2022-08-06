@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Box, Container, Divider, List, Paper } from '@mui/material';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { ITask } from '../models/ITask';
@@ -16,12 +16,15 @@ export const DndList: FC = () => {
         const [reorderedItem] = taskStateCopy.splice(currIndex, 1);
         taskStateCopy.splice(newIndex, 0, reorderedItem);
 
+        localStorage.setItem('tasks', JSON.stringify(taskStateCopy));
         setTasks(taskStateCopy);
     }
 
     const handleAddTask = (newTask: ITask) => {
         setTasks(prevState => {
-            return [...prevState, newTask];
+            const updState = [...prevState, newTask];
+            localStorage.setItem('tasks', JSON.stringify(updState));
+            return updState;
         });
     }
 
@@ -29,15 +32,26 @@ export const DndList: FC = () => {
         setTasks(prevState => {
             const updState = [...prevState];
             updState[index] = task;
+            localStorage.setItem('tasks', JSON.stringify(updState));
             return updState;
         });
     }
 
     const hadleRemoveTask = (id: string) => {
         setTasks(prevState => {
-            return prevState.filter(task => task.id !== id);
+            const updState = prevState.filter(task => task.id !== id);
+            localStorage.setItem('tasks', JSON.stringify(updState));
+            return updState;
         });
     }
+
+    useEffect(() => {
+        const storageTasks = localStorage.getItem('tasks');
+
+        if (storageTasks) {
+            setTasks(JSON.parse(storageTasks));
+        }
+    }, []);
 
     return (
         <Container maxWidth='md'>
