@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useEffect, useRef, useState } from 'react';
-import { Alert, Box, Divider, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import React, { FC, Fragment, useState } from 'react';
+import { Box, Divider, IconButton, ListItem, ListItemText } from '@mui/material';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -8,7 +8,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ITask } from '../models/ITask';
 import { TaskAddInput } from './TaskAddInput';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import autoAnimate from '@formkit/auto-animate';
+import { SubTasksList } from './SubTasksList';
 
 interface ITaskItem {
     index: number,
@@ -20,9 +20,18 @@ interface ITaskItem {
     removeTask: (id: string) => void,
 }
 
-export const TaskItem: FC<ITaskItem> = ({ index, task, isLast, isFirst, reorder, editTask, removeTask, ...props }) => {
+export const TaskItem: FC<ITaskItem> = ({
+    index,
+    task,
+    isLast,
+    isFirst,
+    reorder,
+    editTask,
+    removeTask,
+    ...props
+}) => {
 
-    const listRef = useRef<HTMLDivElement>(null);
+    const [listRef] = useAutoAnimate<HTMLDivElement>();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -66,11 +75,6 @@ export const TaskItem: FC<ITaskItem> = ({ index, task, isLast, isFirst, reorder,
         editTask(editedTask, index);
     }
 
-    useEffect(() => {
-        listRef.current && autoAnimate(listRef.current)
-    }, [listRef]);
-
-
     return (
         <Fragment>
             <Divider />
@@ -113,27 +117,12 @@ export const TaskItem: FC<ITaskItem> = ({ index, task, isLast, isFirst, reorder,
                 {isOpen &&
                     <Fragment>
                         <TaskAddInput setTask={addSubTask} />
-                        <List>
-                            {task.subTasks.map((subTask, i) => (
-                                <TaskItem
-                                    index={i}
-                                    task={subTask}
-                                    isLast={(task.subTasks.length - 1) === i ? true : false}
-                                    isFirst={i === 0 ? true : false}
-                                    reorder={moveSubTasks}
-                                    editTask={handleEditTask}
-                                    removeTask={() => removeSubTask(subTask.id)}
-                                    key={subTask.id}
-                                />
-                            ))}
-                            {!task.subTasks.length &&
-                                <ListItem>
-                                    <Alert severity='info' sx={{ width: '100%' }}>
-                                        You have no subTasks
-                                    </Alert>
-                                </ListItem>
-                            }
-                        </List>
+                        <SubTasksList
+                            subTasks={task.subTasks}
+                            moveSubTasks={moveSubTasks}
+                            handleEditTask={handleEditTask}
+                            removeSubTask={removeSubTask}
+                        />
                     </Fragment>
                 }
             </Box>
