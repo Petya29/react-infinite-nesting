@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-infinite-nesting/static/css/main.e6c13ad2.css",
+    "main.js": "/react-infinite-nesting/static/js/main.755cc736.js",
+    "index.html": "/react-infinite-nesting/index.html",
+    "main.e6c13ad2.css.map": "/react-infinite-nesting/static/css/main.e6c13ad2.css.map",
+    "main.755cc736.js.map": "/react-infinite-nesting/static/js/main.755cc736.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.755cc736.js"
+  ]
+}
